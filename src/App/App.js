@@ -8,7 +8,7 @@ import PostcodeSearch from "../Components/PostcodeSearch"
 
 function App() {
 
-const apiKey = 'unb5dD0MAF7zcGoKXBUX2kYAtkJeqP2k';
+// const apiKey = insert APIkey ;
 
 
 const [weatherInfo, setWeatherInfo] = useState();
