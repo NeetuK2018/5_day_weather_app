@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import WeatherEachDay from "../Components/WeatherEachDay";
 import styles from "./styles.module.css"
 import { useState, useEffect } from 'react'
@@ -8,73 +9,70 @@ import PostcodeSearch from "../Components/PostcodeSearch"
 
 function App() {
 
-const apiKey = 'unb5dD0MAF7zcGoKXBUX2kYAtkJeqP2k';
+  const[latitude, setLatitude] = useState(0);
+  const[longitude, setLongitude] = useState(0);
+  const[cityName, setCityName] = useState('');
+  const[maxTemp, setMaxTemp] = useState(0);
+  const[minTemp, setMinTemp] = useState(0);
+  const[weather, setWeather] = useState('');
+  const[wind, setWind] = useState(0);
+  const[humidity, setHumidity]= useState(0);
 
-
-const [weatherInfo, setWeatherInfo] = useState();
-const [locationKey, setLocationKey] = useState('');
-
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-const iconNumber = (number) => {
-const stringNumber = number.toString();
-const stringLength = stringNumber.length;
-
-if (stringLength === 1){
-  return '0' + stringNumber;
-}else{
-  return stringNumber
-}
-};
-
-
-useEffect (() => {
-  
-  if(locationKey){
-    fetch(
-      `http://dataservice.accuweather.com/forecasts/v1/daily/5day/locationKey=${locationKey}?apikey=${apiKey}`
-      )
-      
-      .then(res => res.json())
-      .then(res => setWeatherInfo(res.DailyForecasts
-        .map(w =>{
-        return {
-          maximum: w.Temperature.Maximum.Value,
-          minimum: w.Temperature.Minimum.Value,
-          outlook: w.Day.IconPhrase,
-          weatherIcon: iconNumber(w.Day.Icon),
-          dayOfWeek: daysOfWeek[new Date (w.Date).getDay()],
-          
-        }
-      }
-        )))};
-    }, [locationKey], daysOfWeek);
-  
-    useEffect(()=>{
-    },[weatherInfo], daysOfWeek);
-    
-    return (
-      
-      <div>
-        <h1>{locationKey}</h1>
-        <PostcodeSearch
-        onWeatherFound = {cityInfo => {
-          setLocationKey(cityInfo.key)
-          setLocationKey(cityInfo.country)
-          setLocationKey(cityInfo.cityName)
-          
-          
-        }}/>
-        
-        <div className ={styles.main}>
-        {!!weatherInfo && weatherInfo.map((i, index) => (
-          <div  className ={styles.card}key={index}>
-          <WeatherEachDay maximum={i.maximum} minimum={i.minimum} outlook={i.outlook} weatherIcon={i.weatherIcon} dayOfWeek ={i.dayOfWeek}/>
-        </div>
-        ))}
-        </div>
-      </div>
-    );
+  const currentPosition = (position)=> {
+    setLatitude(position.coords.latitude)
+    setLongitude(position.coords.longitude)
   }
 
+const apiKey = '91af7880fda38f058a7884146522ab72';
+
+// current weather has city name
+const fetchWeather = async () => {
+  try{
+    await window.navigator.geolocation.getCurrentPosition(currentPosition);
+    const res = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+    )
+    setCityName(res.data.name)
+    }catch(err){
+    console.log(err)
+  }
+};
+
+// 
+
+//one call has 5 days forcast
+const fetchMore = async () => {
+  try{
+    await window.navigator.geolocation.getCurrentPosition(currentPosition);
+    const res = await axios.get(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly&units=metric&appid=${apiKey}`
+    )
+    setMaxTemp(res.data.daily[0].temp.max)
+    setMinTemp(res.data.daily[0].temp.min)
+  
+  }catch(err){
+    console.log(err)
+  }
+};
+
+useEffect(() =>{
+  fetchWeather();
+   
+  
+}, [])
+
+    
+    return <div className="app">
+
+      <h2>{cityName}</h2>
+      <h3>image</h3>
+      <h4>{weather}</h4>
+      <h1>max:{maxTemp}℃ min:{minTemp}</h1>℃℃℃
+      <h5>{wind} {humidity}</h5>
+
+    </div>;
+      
+  
+  }
+  
 export default App;
