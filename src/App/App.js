@@ -104,14 +104,17 @@ useEffect(() => {
  
      fetchCityName();
     fetchDailyWeather();
+
   
   }, []);
   
+
   
 
     
     return (
       <div className={styles.current}>
+
         <h1>{cityName}</h1>
         <img alt= "weather" src={`Http://openweathermap.org/img/wn/${currentIcon}@2x.png`}/>
         <h3>{currentday}</h3>
@@ -124,6 +127,7 @@ useEffect(() => {
             
           ))}
         </div>
+
       </div>
     
     

@@ -1,5 +1,6 @@
 import styles from "../App/styles.module.css"
 
+
 const WeatherEachDay = ( {outlook, max, min, wind, icon}) => {
   return (
     
@@ -13,6 +14,7 @@ const WeatherEachDay = ( {outlook, max, min, wind, icon}) => {
         <h5>wind:{wind}m/s </h5>
       </div>
   
+
   )
 }
 
