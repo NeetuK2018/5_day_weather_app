@@ -104,29 +104,30 @@ useEffect(() => {
  
      fetchCityName();
     fetchDailyWeather();
+
   
   }, []);
   
+
   
 
     
     return (
       <div className={styles.current}>
-      <h1>{cityName}</h1>
-      <img src={`Http://openweathermap.org/img/wn/${currentIcon}@2x.png`}/>
-      <h3>{currentday}</h3>
-      <h3>Temp: {currentTemp}℃</h3>
-      <h5>wind:{currentWind}m/s </h5>
-      <h2>Next Five Day Forecast</h2>
-      <div className ={styles.main}>
-      {!!weather && weather.map((i, index) => (
-        <div  className ={styles.card}key={index}>
 
-          <WeatherEachDay 
-          icon = {i.icon} outlook ={i.outlook} wind={i.wind} min={i.min} max={i.max}/>
-      </div>
-      ))}
-      </div>
+        <h1>{cityName}</h1>
+        <img alt= "weather" src={`Http://openweathermap.org/img/wn/${currentIcon}@2x.png`}/>
+        <h3>{currentday}</h3>
+        <h3>Temp: {currentTemp}℃</h3>
+        <h5>wind:{currentWind}m/s </h5>
+        <h2>Next Five Day Forecast</h2>
+        <div className ={styles.main}>
+          {!!weather && weather.map((i, index) => (
+            <WeatherEachDay key={index} icon = {i.icon} outlook ={i.outlook} wind={i.wind} min={i.min} max={i.max}/>
+            
+          ))}
+        </div>
+
       </div>
     
     
