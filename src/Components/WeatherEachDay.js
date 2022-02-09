@@ -15,6 +15,7 @@ const WeatherEachDay = ( {outlook, max, min, wind, icon}) => {
       </div>
   
 
+
   )
 }
 
