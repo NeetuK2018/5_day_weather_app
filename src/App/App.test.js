@@ -1,40 +1,26 @@
-import {screen, render} from "@testing-library/react";
-import App from "./App";
-import responseCity  from "./responseCity.json";
-import responseForecast from "./responseForecast.json"
-
-import {rest} from "msw";
-import {setupServer} from "msw/node";
-
-
- const weatherCityNameUrl = "https://api.openweathermap.org/data/2.5/weather?lat=53.69&lon=1.78appid=91af7880fda38f058a7884146522ab72"
-
- const weatherForecastUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=53.69&lon=1.78&exclude=minutely,hourly&units=metric&appid=91af7880fda38f058a7884146522ab72"
+import React from "react";
+import {render, cleanuo, waitForElement, cleanup} from "@testing-library/react";
+import axios from "axios";
+import {fetchCityName} from "./App";
+import responseCity from "./responseCity";
+jest.mock('axios');
 
 
+const fetchCityNameURL = `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}}&appid={API key}  `
 
-//parameter URL 
-const weatherCityNameResponse =rest.get(weatherCityNameUrl, (req, res, ctx) => {
-    return res(
-        ctx.json(responseCity)
-    )
-}); 
+afterEach(cleanup);
+describe('fetchCityName', () => {
+    it('fetches and displays city name from', async () => {
+        const data = {
+            responseCity
+        }
+        axios.get.mockImplementationOnce(() => Promise.resolve(data));
+        await expect(fetchCityName('react')).resolves.toEqual(data);
 
-const weatherForecastResponse =rest.get(weatherForecastUrl, (req, res, ctx) => {
-    return res(
-        ctx.json(responseForecast)
-    )
-}); 
-const handlers = [ weatherForecastResponse, weatherCityNameResponse];
+        expect(axios.get).toHaveBeenCalledWith(
+            `${fetchCityNameURL}/weather?lat=53.69)}`
+        )
+    });
 
-const server = new setupServer(...handlers);//  represents API
+})
 
-beforeAll(() => server.listen());   //start
-afterEach(() => server.resetHandlers()); //reset for each one
-afterAll(() => server.close()); //finish
-
-test("it should have the correct current weather for Brighouse", async() => {
-    render(<App/>);
-    const forecast = await screen.findByText("overcast clouds"); 
-    expect(forecast).toBeVisible();
-});

@@ -26,13 +26,13 @@ function App() {
   }
 
 const apiKey = '91af7880fda38f058a7884146522ab72';
-
+const API = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
 // current weather has city name
 const fetchCityName = async () => {
   try{
-    await window.navigator.geolocation.getCurrentPosition(currentPosition);
+    const l = window.navigator.geolocation.getCurrentPosition(currentPosition);
     const res = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+      API
     )
     setCityName(res.data.name)
     }catch(err){
@@ -45,12 +45,12 @@ const fetchCityName = async () => {
 const fetchDailyWeather= async () => {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   try{
-    await window.navigator.geolocation.getCurrentPosition(currentPosition);
+   const location=  window.navigator.geolocation.getCurrentPosition(currentPosition);
     const res = await axios.get(
       `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly&units=metric&appid=${apiKey}`
     )
 
-  console.log(res.data)
+  
      setCurrentTemp(res.data.current.temp)
      setCurrentWind(res.data.current.wind_speed)
     setCurrentIcon(res.data.current.weather[0].icon)
@@ -82,21 +82,21 @@ const fetchDailyWeather= async () => {
 };
 
 
-// useEffect(() => {
-//   const interval = setInterval(() => {
-//     console.log('This will run every second!')
-//     fetchCityName();
-//   fetchDailyWeather();
-//   }, 900000);
-//   return () => clearInterval(interval);
-// }, []);
 useEffect(() => {
+  const interval = setInterval(() => {
+    console.log('This will run every second!')
+    fetchCityName();
+  fetchDailyWeather();
+  }, 900000);
+  return () => clearInterval(interval);
+}, []);
+// useEffect(() => {
  
-     fetchCityName();
-    fetchDailyWeather();
+//      fetchCityName();
+//     fetchDailyWeather();
 
   
-  }, []);
+//   }, []);
   
 
   
