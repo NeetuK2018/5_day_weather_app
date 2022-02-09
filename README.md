@@ -1,4 +1,6 @@
-hidden api key from https://developer.accuweather.com/
+hidden api key from https://developer.accuweather.com/ 
+
+need location to be on in browser
 
 
 # Getting Started with Create React App
