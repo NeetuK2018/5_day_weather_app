@@ -1,14 +1,19 @@
+import styles from "../App/styles.module.css"
 
 
-const WeatherEachDay = ({maximum, minimum, outlook, weatherIcon, dayOfWeek}) => {
+const WeatherEachDay = ( {outlook, max, min, wind, icon}) => {
   return (
-
-    <>
-    {dayOfWeek}
-    <img src= {`https://developer.accuweather.com/sites/default/files/${weatherIcon}-s.png`}/>
-    <div>Max: {maximum} Min: {minimum}</div>
-    <div>Outlook: {outlook}</div>
-    </>
+    
+      <div className={styles.card}>
+        <div>
+          <img src={`Http://openweathermap.org/img/wn/${icon}@2x.png`}/>
+        </div>
+        <h4>{outlook}</h4> 
+        <h5>max: {max}℃ </h5> 
+        <h5>min: {min}℃ </h5>
+        <h5>wind:{wind}m/s </h5>
+      </div>
+  
 
   )
 }
