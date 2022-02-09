@@ -1,12 +1,13 @@
 import React from "react";
+
 import axios from "axios";
 import { useState, useEffect } from 'react'
 import styles from "./styles.module.css"
 import WeatherEachDay from "../Components/WeatherEachDay";
 
 
-
 function App() {
+
 
   const[latitude, setLatitude] = useState(0);
   const[longitude, setLongitude] = useState(0);
