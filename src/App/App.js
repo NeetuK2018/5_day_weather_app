@@ -5,7 +5,6 @@ import styles from "./styles.module.css"
 import WeatherEachDay from "../Components/WeatherEachDay";
 
 
-
 function App() {
 
   const[latitude, setLatitude] = useState(0);
@@ -19,7 +18,7 @@ function App() {
   const[currentWind, setCurrentWind]= useState(0);
   const[currentIcon, setCurrentIcon]= useState();
   const[currentday, setCurrentDay]= useState('');
-  // const[currentWeather, setCurrentWeather]= useState('');
+   const[currentWeather, setCurrentWeather]= useState('');
 
   const currentPosition = (position)=> {
     setLatitude(position.coords.latitude)
@@ -37,11 +36,10 @@ const fetchCityName = async () => {
     )
     setCityName(res.data.name)
     }catch(err){
-    console.log("error")
+    console.log("err")
   }
 };
 
-// 
 
 //one call has 5 days forcast
 const fetchDailyWeather= async () => {
@@ -52,19 +50,11 @@ const fetchDailyWeather= async () => {
       `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly&units=metric&appid=${apiKey}`
     )
 
-  //   setCurrentWeather(res.data.current(i => {    
-  //   console.log(i.weather[0].icon)
-  //   return {
-  //     currentTemp: i.current.temp,
-  //     currentOutlook: i.weather[0].description,// check
-  //     currentWind: i.current.wind_speed,
-  //     currentIcon: i.current.weather[0].icon
-  //   }
-  // }))
   console.log(res.data)
      setCurrentTemp(res.data.current.temp)
      setCurrentWind(res.data.current.wind_speed)
     setCurrentIcon(res.data.current.weather[0].icon)
+    setCurrentWeather(res.data.current.weather[0].description)
     setCurrentDay(daysOfWeek[new Date(res.data.current.dt).getDay()])
     
     // map through daily array and return object and only need next 5 day forecast
@@ -97,7 +87,7 @@ const fetchDailyWeather= async () => {
 //     console.log('This will run every second!')
 //     fetchCityName();
 //   fetchDailyWeather();
-//   }, 10000);
+//   }, 900000);
 //   return () => clearInterval(interval);
 // }, []);
 useEffect(() => {
@@ -114,10 +104,10 @@ useEffect(() => {
     
     return (
       <div className={styles.current}>
-
-        <h1>{cityName}</h1>
+        <h2>{cityName}</h2>
         <img alt= "weather" src={`Http://openweathermap.org/img/wn/${currentIcon}@2x.png`}/>
         <h3>{currentday}</h3>
+        <h3>{currentWeather}</h3>
         <h3>Temp: {currentTemp}℃</h3>
         <h5>wind:{currentWind}m/s </h5>
         <h2>Next Five Day Forecast</h2>
