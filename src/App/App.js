@@ -81,22 +81,22 @@ const fetchDailyWeather= async () => {
   }
 };
 
-
-useEffect(() => {
-  const interval = setInterval(() => {
-    console.log('This will run every second!')
-    fetchCityName();
-  fetchDailyWeather();
-  }, 900000);
-  return () => clearInterval(interval);
-}, []);
+// uncomment for timed refresh and comment out below useEffect
 // useEffect(() => {
+//   const interval = setInterval(() => {
+//     console.log('This will run every second!')
+//     fetchCityName();
+//   fetchDailyWeather();
+//   }, 900000);
+//   return () => clearInterval(interval);
+// }, []);
+useEffect(() => {
  
-//      fetchCityName();
-//     fetchDailyWeather();
+     fetchCityName();
+    fetchDailyWeather();
 
   
-//   }, []);
+  }, []);
   
 
   
